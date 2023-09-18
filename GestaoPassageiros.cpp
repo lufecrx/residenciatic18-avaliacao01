@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 // Gestão de passageiros de uma empresa de transporte.
 
@@ -17,6 +18,12 @@ struct PASSAGEIRO
 string dataFormat(int dia, int mes, int ano)
 {
     return to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
+}
+
+// Compara dois passageiros pelo CPF
+bool compararPorCPF(const PASSAGEIRO &a, const PASSAGEIRO &b)
+{
+    return a.cpf < b.cpf;
 }
 
 bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
@@ -56,14 +63,43 @@ bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
     passageiro.nascimento = dataFormat(dia, mes, ano);
 
-    passageiros.push_back(passageiro);
+    // Encontrando a posição correta para inserir o passageiro com base no CPF
+    auto it = lower_bound(passageiros.begin(), passageiros.end(), passageiro, compararPorCPF);
+
+    // Inserindo o passageiro na posição encontrada
+    passageiros.insert(it, passageiro);
+
     return true; // O passageiro foi adicionado sem problemas
 }
 
-// bool excluirPassageiro()
-// {
+int encontrarPassageiro(vector<PASSAGEIRO> &passageiros)
+{
+    string referencia;
 
-// }
+    cout << "CPF do passageiro procurado: ";
+    cin >> referencia;
+
+    for (int i = 0; i < passageiros.size(); i++)
+    {
+        if (passageiros[i].cpf == referencia)
+        {
+            // Encontrou o passageiro com o CPF especificado
+            passageiros.erase(passageiros.begin() + i);
+            cout << "Passageiro com CPF " << referencia << " encontrado." << endl;
+            return i; // Retorna o índice dele na lista
+        }
+        else if (passageiros[i].cpf > referencia)
+        {
+            // Chegou a um passageiro com CPF maior, o passageiro não está na lista
+            cout << "Passageiro com CPF " << referencia << " não encontrado." << endl;
+            return -1; // Passageiro não encontrado
+        }
+    }
+
+    // Se o loop terminar sem encontrar o passageiro, significa que ele não está na lista
+    cout << "Passageiro com CPF " << referencia << " não encontrado." << endl;
+    return -1; // Passageiro não encontrado
+}
 
 int main()
 {
