@@ -18,12 +18,21 @@ struct PASSAGEIRO
 // dd/mm/aaaa
 string formatarData(int dia, int mes, int ano)
 {
+    string diaString = to_string(dia),
+           mesString = to_string(mes),
+           anoString = to_string(ano);
+
     if (dia < 10)
     {
-        return "0" + to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
+        diaString = "0" + to_string(dia);
     }
 
-    return to_string(dia) + "/" + to_string(mes) + "/" + to_string(ano);
+    if (mes < 10)
+    {
+        mesString = "0" + to_string(mes);
+    }
+
+    return diaString + "/" + mesString + "/" + anoString;
 }
 
 bool validarData(int dia, int mes, int ano)
@@ -62,7 +71,7 @@ int encontrarPassageiro(vector<PASSAGEIRO> passageiros)
     cout << "CPF do passageiro procurado: ";
     cin >> referencia;
 
-    for (int i = 0; i < passageiros.size(); i++)
+    for (vector<PASSAGEIRO>::size_type i = 0; i < passageiros.size(); i++)
     {
         if (passageiros[i].cpf == referencia)
         {
@@ -85,6 +94,8 @@ int encontrarPassageiro(vector<PASSAGEIRO> passageiros)
 
 bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 {
+    cout << "INCLUIR PASSAGEIRO" << endl;
+
     PASSAGEIRO passageiro;
     int dia, mes, ano;
 
@@ -110,6 +121,9 @@ bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
     passageiro.nascimento = formatarData(dia, mes, ano);
 
+    cout << "Número de autorização: ";
+    cin >> passageiro.numAutorizacao;
+
     // Encontrando a posição correta para inserir o passageiro com base no CPF
     auto it = lower_bound(passageiros.begin(), passageiros.end(), passageiro, compararPorCPF);
 
@@ -121,6 +135,8 @@ bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
 bool excluirPassageiro(vector<PASSAGEIRO> &passageiros)
 {
+    cout << "EXCLUIR PASSAGEIRO" << endl;
+
     int pos = encontrarPassageiro(passageiros);
 
     if (pos == -1) // CPF informado não está na lista
@@ -131,14 +147,16 @@ bool excluirPassageiro(vector<PASSAGEIRO> &passageiros)
     {
         passageiros.erase(passageiros.begin() + pos);
         cout << "Passageiro excluído." << endl;
-        return true; 
+        return true;
     }
-    
+
     return false; // O passageiro informado não existe
 }
 
 bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
 {
+    cout << "LOCALIZAR PASSAGEIRO" << endl;
+
     int pos = encontrarPassageiro(passageiros);
 
     if (pos == -1) // CPF informado não está na lista
@@ -147,10 +165,10 @@ bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
     }
     else
     {
-        cout << passageiros[pos].nome << endl;
-        cout << passageiros[pos].cpf << endl;
-        cout << passageiros[pos].nascimento << endl;
-        cout << passageiros[pos].numAutorizacao << endl;
+        cout << "Nome: " << passageiros[pos].nome << endl;
+        cout << "CPF: " << passageiros[pos].cpf << endl;
+        cout << "Data de nascimento: " << passageiros[pos].nascimento << endl;
+        cout << "Número de autorização: " << passageiros[pos].numAutorizacao << endl;
 
         return true; // Passageiro encontrado e informações impressas na tela
     }
@@ -158,6 +176,8 @@ bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
 
 void alterarDado(vector<PASSAGEIRO> &passageiros)
 {
+    cout << "ALTERAR DADO DO PASSAGEIRO" << endl;
+
     int pos = encontrarPassageiro(passageiros);
     char resposta;
 
@@ -169,14 +189,17 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
     {
         int campo;
 
-        cout << "Insira o número correspondente ao campo a ser alterado, qualquer outro para voltar: ";
+        cout << "Insira o número correspondente ao campo a ser alterado, qualquer outro para voltar: " << endl;
 
         do
         {
+            cout << "---" << endl;
+
             cout << "1 - Nome" << endl;
             cout << "2 - CPF" << endl;
             cout << "3 - Data de nascimento" << endl;
             cout << "4 - Número de autorização" << endl;
+            cout << "Opção: ";
             cin >> campo;
 
             switch (campo)
@@ -226,7 +249,7 @@ void listarPassageiros(vector<PASSAGEIRO> passageiros)
 {
     cout << "LISTA DOS PASSAGEIROS" << endl;
 
-    for (int pos = 0; pos < passageiros.size(); pos++)
+    for (vector<PASSAGEIRO>::size_type pos = 0; pos < passageiros.size(); pos++)
     {
         cout << "---" << endl;
         cout << passageiros[pos].nome << endl;
@@ -236,6 +259,54 @@ void listarPassageiros(vector<PASSAGEIRO> passageiros)
     }
 }
 
+// FUNÇÃO PRINCIPAL
 int main()
 {
+    int resposta;
+    vector<PASSAGEIRO> passageiros;
+
+    cout << "   -  Módulo de Gestão de Passageiros  -   " << endl;
+
+    do
+    {
+        cout << "Selecione a opção desejada:" << endl;
+        cout << "1 - Incluir passageiro" << endl;
+        cout << "2 - Excluir passageiro" << endl;
+        cout << "3 - Alterar dado do passageiro" << endl;
+        cout << "4 - Listar todos os passageiros" << endl;
+        cout << "5 - Localizar passageiro" << endl;
+        cout << "0 - Sair" << endl;
+        cout << "Opção: ";
+        cin >> resposta;
+
+        cout << endl;
+
+        switch (resposta)
+        {
+        case 1:
+            incluirPassageiro(passageiros);
+            break;
+        case 2:
+            excluirPassageiro(passageiros);
+            break;
+        case 3:
+            alterarDado(passageiros);
+            break;
+        case 4:
+            listarPassageiros(passageiros);
+            break;
+        case 5:
+            localizarPassageiro(passageiros);
+            break;
+        case 0:
+            cout << "Gestão de passageiros encerrado." << endl;
+            break;
+        default:
+            cout << "Insira o número correspondente a alguma das opções." << endl;
+            break;
+        }
+
+        cout << endl;
+
+    } while (resposta != 0);
 }
