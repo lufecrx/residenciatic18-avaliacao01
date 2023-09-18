@@ -30,7 +30,7 @@ void listar(vector<passageiro> listaPassageiros);
 int main(void){
     vector<passageiro> listaPassageiros;
     int menu;
-
+    
     do{
     cout << "MENU" << endl;
     cout << "1 - incluir" << endl;
@@ -40,7 +40,7 @@ int main(void){
     cout << "5 - localizar" << endl;
     cout << "0 - sair" << endl;
     cin >> menu;
-    switch (menu){
+    switch(menu){
         case 1:
             incluir(listaPassageiros);
             break;
@@ -58,15 +58,16 @@ int main(void){
             break;
         case 0:
             break;
-    }//switch
-    }while(menu!=0);
+        }//switch
+    }while(1);
+    
     return 0;
 }//main
 
 
 void incluir(vector<passageiro> &listaPassageiros){
     passageiro novoPassageiro;
-    cout << "Digite o nome do passageiro" << endl;
+    cout << "Digite o nome" << endl;
     cin >> novoPassageiro.nome;
     cout << "Digite o CPF" << endl;
     cin >> novoPassageiro.cpf;
@@ -138,12 +139,12 @@ int localizar(vector<passageiro> listaPassageiros){
 }
 
 void listar(vector<passageiro> listaPassageiros){
-    for(int i=0;i<int(listaPassageiros.size());i++){
-        cout << "DADOS DO PASSAGEIRO" << i << endl;
+    for(unsigned long int i=0;i<listaPassageiros.size();i++){
+        cout << "DADOS DO PASSAGEIRO - " << i << ": " << endl;
         cout << "Nome: " << listaPassageiros[i].nome << endl;
         cout << "CPF: " << listaPassageiros[i].cpf << endl;
         cout << "Data de Nascimento: " << listaPassageiros[i].dataNascimento << endl;
-        cout << "Nuemro de Autorizacao: " << listaPassageiros[i].numeroAutorizacao << endl;
+        cout << "Numero de Autorizacao: " << listaPassageiros[i].numeroAutorizacao << endl;
     }
 }
 
@@ -151,10 +152,11 @@ int localizar_cpf(vector<passageiro> listaPassageiros){
     string cpf;
     cout << "Digite o CPF do passageiro:" << endl;
     cin >> cpf;
-    for(int i=0;i<listaPassageiros.size();i++){
-        if (listaPassageiros[i].cpf == cpf)
-        cout << "Passageiro com CPF " << cpf << " encontrado" << endl;
-        return i;
+    for(unsigned int i=0;i<listaPassageiros.size();i++){
+        if (listaPassageiros[i].cpf == cpf){
+            cout << "Passageiro com CPF " << cpf << " encontrado" << endl;
+            return i;
+        }
     }
     cout << "Passageiro com CPF " << cpf << " NAO encontrado" << endl;
     return -1;
