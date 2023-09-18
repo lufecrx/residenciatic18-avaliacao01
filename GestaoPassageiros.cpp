@@ -72,7 +72,7 @@ bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
     return true; // O passageiro foi adicionado sem problemas
 }
 
-int encontrarPassageiro(vector<PASSAGEIRO> &passageiros)
+int encontrarPassageiro(vector<PASSAGEIRO> passageiros)
 {
     string referencia;
 
@@ -99,6 +99,30 @@ int encontrarPassageiro(vector<PASSAGEIRO> &passageiros)
     // Se o loop terminar sem encontrar o passageiro, significa que ele não está na lista
     cout << "Passageiro com CPF " << referencia << " não encontrado." << endl;
     return -1; // Passageiro não encontrado
+}
+
+bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
+{
+    int pos = encontrarPassageiro(passageiros);
+
+    if (pos == -1) // CPF informado não está na lista
+    {
+        return false;
+    }
+    else
+    {
+        cout << passageiros[pos].nome << endl;
+        cout << passageiros[pos].cpf << endl;
+        cout << passageiros[pos].nascimento << endl;
+        cout << passageiros[pos].numAutorizacao << endl;
+        
+        return true; // Passageiro encontrado e informações impressas na tela
+    }
+}
+
+bool alterarDado(vector<PASSAGEIRO> &passageiros)
+{
+    
 }
 
 int main()
