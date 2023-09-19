@@ -5,14 +5,19 @@
 using namespace std;
 
 // Estrutura de dados para representar uma data
-struct Data {
+struct Data
+{
     int dia;
     int mes;
     int ano;
+    int hora;
+    int minutos;
+    int segundos;
 };
 
 // Estrutura de dados para passageiro
-struct Passageiro {
+struct Passageiro
+{
     string cpf;
     string nome;
     Data dataNascimento;
@@ -20,7 +25,8 @@ struct Passageiro {
 };
 
 // Estrutura de dados para roteiro
-struct Roteiro {
+struct Roteiro
+{
     int id;
     Data dataHoraPrevista;
     string duracaoPrevista;
@@ -28,8 +34,9 @@ struct Roteiro {
     string destino;
 };
 
-// Função para incluir um passageiro na coleção
-void IncluirPassageiro(vector<Passageiro>& passageiros) {
+// Função para incluir um passageiro no vector
+void IncluirPassageiro(vector<Passageiro> &passageiros)
+{
     Passageiro novoPassageiro;
     cout << "Informe o CPF do passageiro: ";
     cin >> novoPassageiro.cpf;
@@ -45,14 +52,17 @@ void IncluirPassageiro(vector<Passageiro>& passageiros) {
     cout << "Passageiro adicionado com sucesso!" << endl;
 }
 
-// Função para excluir um passageiro da coleção por CPF
-void ExcluirPassageiro(vector<Passageiro>& passageiros) {
+// Função para excluir um passageiro do vetor por CPF
+void ExcluirPassageiro(vector<Passageiro> &passageiros)
+{
     string cpf;
     cout << "Informe o CPF do passageiro a ser excluído: ";
     cin >> cpf;
 
-    for (auto it = passageiros.begin(); it != passageiros.end(); ++it) {
-        if (it->cpf == cpf) {
+    for (auto it = passageiros.begin(); it != passageiros.end(); ++it)
+    {
+        if (it->cpf == cpf)
+        {
             passageiros.erase(it);
             cout << "Passageiro removido com sucesso!" << endl;
             return;
@@ -63,71 +73,194 @@ void ExcluirPassageiro(vector<Passageiro>& passageiros) {
 }
 
 // Função para listar todos os passageiros
-void ListarPassageiros(const vector<Passageiro>& passageiros) {
+void ListarPassageiros(const vector<Passageiro> &passageiros)
+{
     cout << "Lista de Passageiros:" << endl;
-    for (const Passageiro& passageiro : passageiros) {
+    for (const Passageiro &passageiro : passageiros)
+    {
         cout << "CPF: " << passageiro.cpf << " | Nome: " << passageiro.nome << " | Data de Nascimento: "
              << passageiro.dataNascimento.dia << "/" << passageiro.dataNascimento.mes << "/" << passageiro.dataNascimento.ano
              << " | Número de Autorização: " << passageiro.numAutorizacao << endl;
     }
 }
 
-void menuPassageiros() {
-    vector<Passageiro> passageiros;
-    int escolha;
+// Funções para gerenciar roteiros
 
-    do {
-        cout << "\nMenu de Opções:" << endl;
-        cout << "1. Incluir Passageiro" << endl;
-        cout << "2. Excluir Passageiro" << endl;
-        cout << "3. Listar Passageiros" << endl;
-        cout << "0. Sair" << endl;
-        cout << "Escolha uma opção: ";
-        cin >> escolha;
+void IncluirRoteiro(vector<Roteiro> &roteiros)
+{
+    Roteiro novoRoteiro;
+    cout << "Informe o código do roteiro: ";
+    cin >> novoRoteiro.id;
+    cout << "Informe a data e hora prevista do roteiro (DD MM AAAA HH:MM): ";
+    cin >> novoRoteiro.dataHoraPrevista.dia >> novoRoteiro.dataHoraPrevista.mes >> novoRoteiro.dataHoraPrevista.ano;
+    cin >> novoRoteiro.dataHoraPrevista.hora >> novoRoteiro.dataHoraPrevista.minutos;
+    cout << "Informe a duração prevista do roteiro: ";
+    cin.ignore(); // Limpar o buffer do teclado
+    getline(cin, novoRoteiro.duracaoPrevista);
+    cout << "Informe a origem do roteiro: ";
+    getline(cin, novoRoteiro.origem);
+    cout << "Informe o destino do roteiro: ";
+    getline(cin, novoRoteiro.destino);
 
-        switch (escolha) {
-            case 1:
-                IncluirPassageiro(passageiros);
-                break;
-            case 2:
-                ExcluirPassageiro(passageiros);
-                break;
-            case 3:
-                ListarPassageiros(passageiros);
-                break;
-            case 0:
-                cout << "Saindo do programa." << endl;
-                break;
-            default:
-                cout << "Opção inválida." << endl;
-        }
-    } while (escolha != 0);
+    roteiros.push_back(novoRoteiro);
+    cout << "Roteiro adicionado com sucesso!" << endl;
 }
 
+// Função para excluir um roteiro da coleção por código
+void ExcluirRoteiro(vector<Roteiro> &roteiros)
+{
+    int codigo;
+    cout << "Informe o código do roteiro a ser excluído: ";
+    cin >> codigo;
 
+    for (auto it = roteiros.begin(); it != roteiros.end(); ++it)
+    {
+        if (it->id == codigo)
+        {
+            roteiros.erase(it);
+            cout << "Roteiro removido com sucesso!" << endl;
+            return;
+        }
+    }
 
-int main() {
-    int opcao;
+    cout << "Roteiro com código " << codigo << " não encontrado." << endl;
+}
+
+// Função para listar todos os roteiros
+void ListarRoteiros(const vector<Roteiro> &roteiros)
+{
+    cout << "Lista de Roteiros:" << endl;
+    for (const Roteiro &roteiro : roteiros)
+    {
+        cout << "Código: " << roteiro.id << " | Data e Hora Prevista: "
+             << roteiro.dataHoraPrevista.dia << "/" << roteiro.dataHoraPrevista.mes << "/" << roteiro.dataHoraPrevista.ano
+             << " " << roteiro.dataHoraPrevista.hora << ":" << roteiro.dataHoraPrevista.minutos
+             << " | Duração Prevista: " << roteiro.duracaoPrevista
+             << " | Origem: " << roteiro.origem
+             << " | Destino: " << roteiro.destino << endl;
+    }
+}
+
+// Função para localizar um roteiro por código
+void LocalizarRoteiro(const vector<Roteiro> &roteiros)
+{
+    int codigo;
+    cout << "Informe o código do roteiro a ser localizado: ";
+    cin >> codigo;
+
+    for (const Roteiro &roteiro : roteiros)
+    {
+        if (roteiro.id == codigo)
+        {
+            cout << "Roteiro encontrado:" << endl;
+            cout << "Código: " << roteiro.id << " | Data e Hora Prevista: "
+                 << roteiro.dataHoraPrevista.dia << "/" << roteiro.dataHoraPrevista.mes << "/" << roteiro.dataHoraPrevista.ano
+                 << " " << roteiro.dataHoraPrevista.hora << ":" << roteiro.dataHoraPrevista.minutos
+                 << " | Duração Prevista: " << roteiro.duracaoPrevista
+                 << " | Origem: " << roteiro.origem
+                 << " | Destino: " << roteiro.destino << endl;
+            return;
+        }
+    }
+
+    cout << "Roteiro com código " << codigo << " não encontrado." << endl;
+}
+
+int main()
+{
+    vector<Passageiro> passageiros;
+    vector<Roteiro> roteiros;
+    int escolha;
+
     do
     {
-        cout << "\nMenu de Opções:" << endl;
+        cout << "\nMenu Principal:" << endl;
         cout << "1. Gerenciar Passageiros" << endl;
         cout << "2. Gerenciar Roteiros" << endl;
+        cout << "0. Sair" << endl;
+        cout << "Escolha um módulo: ";
+        cin >> escolha;
 
-        switch (opcao)
+        switch (escolha)
         {
         case 1:
-            menuPassageiros();
+            // Módulo de gerenciamento de passageiros
+            int escolhaPassageiros;
+            do
+            {
+                cout << "\nMenu de Opções (Passageiros):" << endl;
+                cout << "1. Incluir Passageiro" << endl;
+                cout << "2. Excluir Passageiro" << endl;
+                cout << "3. Listar Passageiros" << endl;
+                cout << "0. Voltar ao Menu Principal" << endl;
+                cout << "Escolha uma opção: ";
+                cin >> escolhaPassageiros;
+
+                switch (escolhaPassageiros)
+                {
+                case 1:
+                    IncluirPassageiro(passageiros);
+                    break;
+                case 2:
+                    ExcluirPassageiro(passageiros);
+                    break;
+                case 3:
+                    ListarPassageiros(passageiros);
+                    break;
+                case 0:
+                    cout << "Voltando ao Menu Principal." << endl;
+                    break;
+                default:
+                    cout << "Opção inválida." << endl;
+                }
+            } while (escolhaPassageiros != 0);
             break;
-        
+
         case 2:
-            menuPassageiros();
+            // Módulo de gerenciamento de roteiros
+            int escolhaRoteiros;
+            do
+            {
+                cout << "\nMenu de Opções (Roteiros):" << endl;
+                cout << "1. Incluir Roteiro" << endl;
+                cout << "2. Excluir Roteiro" << endl;
+                cout << "3. Listar Roteiros" << endl;
+                cout << "4. Localizar Roteiro por Código" << endl;
+                cout << "0. Voltar ao Menu Principal" << endl;
+                cout << "Escolha uma opção: ";
+                cin >> escolhaRoteiros;
+
+                switch (escolhaRoteiros)
+                {
+                case 1:
+                    IncluirRoteiro(roteiros);
+                    break;
+                case 2:
+                    ExcluirRoteiro(roteiros);
+                    break;
+                case 3:
+                    ListarRoteiros(roteiros);
+                    break;
+                case 4:
+                    LocalizarRoteiro(roteiros);
+                    break;
+                case 0:
+                    cout << "Voltando ao Menu Principal." << endl;
+                    break;
+                default:
+                    cout << "Opção inválida." << endl;
+                }
+            } while (escolhaRoteiros != 0);
             break;
-        
+
+        case 0:
+            cout << "Saindo do programa." << endl;
+            break;
+
         default:
             cout << "Opção inválida." << endl;
         }
-    } while (opcao != 0);
-    
+    } while (escolha != 0);
+
     return 0;
 }
