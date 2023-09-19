@@ -72,6 +72,38 @@ void ExcluirPassageiro(vector<Passageiro> &passageiros)
     cout << "Passageiro com CPF " << cpf << " não encontrado." << endl;
 }
 
+void AlterarPassageiro(vector<Passageiro>& passageiros) {
+    string cpf;
+    cout << "Informe o CPF do passageiro a ser alterado: ";
+    cin >> cpf;
+
+    for (auto& passageiro : passageiros) {
+        if (passageiro.cpf == cpf) { //CPF DO PASSAGEIRO
+            cout << "Passageiro encontrado. Deseja alterar os dados? (S/N): ";
+            char resposta;
+            cin >> resposta;
+
+            if (toupper(resposta) == 'S') { //TOUPPER CONVERTE O CARACTER PARA MAIÚSCULO
+                cout << "Novo nome (atual: " << passageiro.nome << "): ";
+                cin.ignore(); // Limpar o buffer do teclado
+                getline(cin, passageiro.nome);
+                cout << "Nova data de nascimento (atual: " << passageiro.dataNascimento.dia << "/"
+                     << passageiro.dataNascimento.mes << "/" << passageiro.dataNascimento.ano << "): ";
+                cin >> passageiro.dataNascimento.dia >> passageiro.dataNascimento.mes >> passageiro.dataNascimento.ano;
+                cout << "Novo número de autorização (atual: " << passageiro.numAutorizacao << "): ";
+                cin >> passageiro.numAutorizacao;
+                cout << "Passageiro alterado com sucesso!" << endl;
+                return;
+            } else {
+                cout << "Alteração cancelada." << endl;
+                return;
+            }
+        }
+    }
+
+    cout << "Passageiro com CPF " << cpf << " não encontrado." << endl;
+}
+
 // Função para listar todos os passageiros
 void ListarPassageiros(const vector<Passageiro> &passageiros)
 {
@@ -141,6 +173,42 @@ void ListarRoteiros(const vector<Roteiro> &roteiros)
     }
 }
 
+void AlterarRoteiro(vector<Roteiro>& roteiros) {
+    int codigo;
+    cout << "Informe o código do roteiro a ser alterado: ";
+    cin >> codigo;
+
+    for (auto& roteiro : roteiros) {
+        if (roteiro.id == codigo) { //CODIGO DO ROTEIRO
+            cout << "Roteiro encontrado. Deseja alterar os dados? (S/N): ";
+            char resposta;
+            cin >> resposta;
+
+            if (toupper(resposta) == 'S') { //TOUPPER CONVERTE O CARACTER PARA MAIÚSCULO
+                cout << "Nova data e hora prevista (atual: " << roteiro.dataHoraPrevista.dia << "/"
+                     << roteiro.dataHoraPrevista.mes << "/" << roteiro.dataHoraPrevista.ano << " "
+                     << roteiro.dataHoraPrevista.hora << ":" << roteiro.dataHoraPrevista.minutos << "): ";
+                cin >> roteiro.dataHoraPrevista.dia >> roteiro.dataHoraPrevista.mes >> roteiro.dataHoraPrevista.ano;
+                cin >> roteiro.dataHoraPrevista.hora >> roteiro.dataHoraPrevista.minutos;
+                cout << "Nova duração prevista (atual: " << roteiro.duracaoPrevista << "): ";
+                cin.ignore(); // Limpar o buffer do teclado
+                getline(cin, roteiro.duracaoPrevista);
+                cout << "Nova origem (atual: " << roteiro.origem << "): ";
+                getline(cin, roteiro.origem);
+                cout << "Novo destino (atual: " << roteiro.destino << "): ";
+                getline(cin, roteiro.destino);
+                cout << "Roteiro alterado com sucesso!" << endl;
+                return;
+            } else {
+                cout << "Alteração cancelada." << endl;
+                return;
+            }
+        }
+    }
+
+    cout << "Roteiro com código " << codigo << " não encontrado." << endl;
+}
+
 // Função para localizar um roteiro por código
 void LocalizarRoteiro(const vector<Roteiro> &roteiros)
 {
@@ -192,6 +260,7 @@ int main()
                 cout << "1. Incluir Passageiro" << endl;
                 cout << "2. Excluir Passageiro" << endl;
                 cout << "3. Listar Passageiros" << endl;
+                cout << "4. Alterar Passageiros" << endl;
                 cout << "0. Voltar ao Menu Principal" << endl;
                 cout << "Escolha uma opção: ";
                 cin >> escolhaPassageiros;
@@ -206,6 +275,9 @@ int main()
                     break;
                 case 3:
                     ListarPassageiros(passageiros);
+                    break;
+                case 4:
+                    AlterarPassageiro(passageiros);
                     break;
                 case 0:
                     cout << "Voltando ao Menu Principal." << endl;
@@ -226,6 +298,7 @@ int main()
                 cout << "2. Excluir Roteiro" << endl;
                 cout << "3. Listar Roteiros" << endl;
                 cout << "4. Localizar Roteiro por Código" << endl;
+                cout << "5. Alterar Roteiro" << endl;
                 cout << "0. Voltar ao Menu Principal" << endl;
                 cout << "Escolha uma opção: ";
                 cin >> escolhaRoteiros;
@@ -243,6 +316,9 @@ int main()
                     break;
                 case 4:
                     LocalizarRoteiro(roteiros);
+                    break;
+                case 5:
+                    AlterarRoteiro(roteiros);
                     break;
                 case 0:
                     cout << "Voltando ao Menu Principal." << endl;
