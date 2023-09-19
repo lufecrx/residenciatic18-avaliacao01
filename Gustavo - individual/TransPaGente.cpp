@@ -72,7 +72,7 @@ void ListarPassageiros(const vector<Passageiro>& passageiros) {
     }
 }
 
-int main() {
+void menuPassageiros() {
     vector<Passageiro> passageiros;
     int escolha;
 
@@ -102,6 +102,32 @@ int main() {
                 cout << "Opção inválida." << endl;
         }
     } while (escolha != 0);
+}
 
+
+
+int main() {
+    int opcao;
+    do
+    {
+        cout << "\nMenu de Opções:" << endl;
+        cout << "1. Gerenciar Passageiros" << endl;
+        cout << "2. Gerenciar Roteiros" << endl;
+
+        switch (opcao)
+        {
+        case 1:
+            menuPassageiros();
+            break;
+        
+        case 2:
+            menuPassageiros();
+            break;
+        
+        default:
+            cout << "Opção inválida." << endl;
+        }
+    } while (opcao != 0);
+    
     return 0;
 }
