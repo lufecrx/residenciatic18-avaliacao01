@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <locale>
 
 // Gestão de passageiros de uma empresa de transporte.
 
@@ -100,7 +101,8 @@ bool incluirPassageiro(vector<PASSAGEIRO> &passageiros)
     int dia, mes, ano;
 
     cout << "Nome do passageiro: ";
-    cin >> passageiro.nome;
+    cin.ignore();                  
+    getline(cin, passageiro.nome); 
 
     cout << "CPF do passageiro: ";
     cin >> passageiro.cpf;
@@ -205,8 +207,8 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
             switch (campo)
             {
             case 1:
-                cout << "Novo nome: ";
-                cin >> passageiros[pos].nome;
+                cin.ignore();                        
+                getline(cin, passageiros[pos].nome); 
                 break;
             case 2:
                 cout << "Novo CPF: ";
@@ -248,14 +250,26 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
 void listarPassageiros(vector<PASSAGEIRO> passageiros)
 {
     cout << "LISTA DOS PASSAGEIROS" << endl;
+    int qntPassageiros = 0;
 
     for (vector<PASSAGEIRO>::size_type pos = 0; pos < passageiros.size(); pos++)
     {
         cout << "---" << endl;
-        cout << passageiros[pos].nome << endl;
-        cout << passageiros[pos].cpf << endl;
-        cout << passageiros[pos].nascimento << endl;
-        cout << passageiros[pos].numAutorizacao << endl;
+        cout << "Nome: " << passageiros[pos].nome << endl;
+        cout << "CPF: " << passageiros[pos].cpf << endl;
+        cout << "Data de nascimento: " << passageiros[pos].nascimento << endl;
+        cout << "Número de autorização: " << passageiros[pos].numAutorizacao << endl;
+
+        qntPassageiros++;
+    }
+
+    if (qntPassageiros == 0)
+    {
+        cout << "(sem passageiros na lista)" << endl;
+    }
+    else
+    {   
+        cout << endl << "Quantidade de passageiros: " << qntPassageiros << endl;
     }
 }
 
