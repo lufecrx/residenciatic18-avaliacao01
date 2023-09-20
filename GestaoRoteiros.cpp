@@ -22,6 +22,22 @@ bool compararPorCodigo(const ROTEIRO &a, const ROTEIRO &b)
     return a.codigo < b.codigo;
 }
 
+bool dataValida(string data)
+{
+    // Dias entre 1 e 31, meses entre 1 a 12, anos a partir de 2023
+    regex dataRegex(R"((0[1-9]|[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2]|[1-9])/(202[3-9]|20[3-9][0-9]))");
+
+    return regex_match(data, dataRegex);
+}
+
+bool horaValida(string hora)
+{
+    // Horários válidos
+    regex horarioRegex(R"((2[0-3]|[0-1]?[0-9]):([0-5]?[0-9]))");
+
+    return regex_match(hora, horarioRegex);
+}
+
 void incluirRoteiro(vector<ROTEIRO> &roteiros)
 {
     ROTEIRO roteiro;
@@ -33,13 +49,36 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
     cout << "Data (dd/mm/aaaa): ";
     cin >> data;
 
+    if (!dataValida(data)) // Se data estiver incorreto
+    {
+        cout << "Use o formato dd/mm/aaaa para a data. Não informe anos anteriores a 2023." << endl;
+        return;
+    }
+
     cout << "Horário previsto (hh:mm): ";
     cin >> hora;
+
+    if (!horaValida(hora)) // Se hora estiver incorreto
+    {
+        cout << "Use o formato hh:mm para o horário." << endl;
+        return;
+    }
 
     roteiro.horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
 
     cout << "Duração prevista: ";
     cin >> duracao;
+
+    if (horaValida(duracao))
+    {
+        roteiro.duracaoPrevista = duracao + " horas";
+    }
+    else
+    {
+        cout << "Informações inválidas: " << endl
+             << "Use o formato hh:mm para a duração." << endl;
+        return;
+    }
 
     cout << "Destino: ";
     cin.ignore();
@@ -139,15 +178,35 @@ void alterarRoteiro(vector<ROTEIRO> &roteiros)
                 cout << "Novo horário: ";
                 cin >> hora;
 
-                roteiros[pos].horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
-                cout << "Data e horário alterados com sucesso." << endl;
+                if (dataValida(data) && horaValida(hora))
+                {
+                    roteiros[pos].horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
+                    cout << "Data e horário alterados com sucesso." << endl;
+                }
+                else
+                {
+                    cout << "Informações inválidas: " << endl
+                         << "Use o formato dd/mm/aaaa para a data. Não informe anos anteriores a 2023." << endl
+                         << "Use o formato hh:mm para o horário." << endl;
+                    break;
+                }
                 break;
             case 3:
                 cout << "Nova duração prevista: ";
                 cin >> duracao;
 
-                roteiros[pos].duracaoPrevista = duracao + " horas";
-                cout << "Duração alterada com sucesso." << endl;
+                if (horaValida(duracao))
+                {
+                    roteiros[pos].duracaoPrevista = duracao + " horas";
+                    cout << "Duração alterada com sucesso." << endl;
+                }
+                else
+                {
+                    cout << "Informações inválidas: " << endl
+                         << "Use o formato hh:mm para a duração.";
+                    break;
+                }
+                break;
             case 4:
                 cout << "Novo destino: ";
                 cin.ignore();
