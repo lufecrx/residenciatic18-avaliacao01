@@ -59,7 +59,7 @@ void alterar_passageiro(vector<passageiro> &listaPassageiros){
         cout << "Deseja alterar o nome? (s/n)";
         cin >> resposta;
         if(resposta=='s')
-            cin >> listaPassageiros[i].nome;
+            getline(cin,listaPassageiros[i].nome);
 
         cout << "Deseja alterar o CPF? (s/n)";
         cin >> resposta;
@@ -74,7 +74,7 @@ void alterar_passageiro(vector<passageiro> &listaPassageiros){
         cout << "Deseja alterar o numero de autentificação? (s/n)";
         cin >> resposta;
         if(resposta=='s')
-            cin >> listaPassageiros[i].numeroAutorizacao;
+            getline(cin,listaPassageiros[i].numeroAutorizacao);
         
         cout << "Passageiro ALTERADO com sucesso" << endl;
     } 
@@ -91,7 +91,7 @@ void excluir_passageiro(vector<passageiro> &listaPassageiros){
 void incluir_passageiro(vector<passageiro> &listaPassageiros){
     passageiro novoPassageiro;
     cout << "Digite o nome" << endl;
-    cin >> novoPassageiro.nome;
+    getline(cin,novoPassageiro.nome);
     cout << "Digite o CPF" << endl;
     cin >> novoPassageiro.cpf;
     cout << "Digite a data de nascimento no formato (DD/MM/AAAA)" << endl;
@@ -102,7 +102,7 @@ void incluir_passageiro(vector<passageiro> &listaPassageiros){
     cin >> resposta;
     if (resposta == 's'){
         cout << "Digite o numero de autorizacao" << endl;
-        cin >> novoPassageiro.numeroAutorizacao;
+        getline(cin,novoPassageiro.numeroAutorizacao);
     }
     listaPassageiros.push_back(novoPassageiro);
     cout << "Passageiro INCLUIDO com sucesso" << endl;
@@ -220,11 +220,11 @@ void alterar_roteiro(vector<roteiro> &listaRoteiros){
         cout << "Deseja alterar o local de origem? (s/n)";
         cin >> resposta;
         if(resposta=='s')
-            cin >> listaRoteiros[i].origem;
+            getline(cin,listaRoteiros[i].origem);
         cout << "Deseja alterar o local de destino? (s/n)";
         cin >> resposta;
         if(resposta=='s')
-            cin >> listaRoteiros[i].destino;
+            getline(cin,listaRoteiros[i].destino);
         cout << "Roteito ALTERADO com sucesso" << endl;
     }
 }
@@ -248,9 +248,9 @@ void incluir_roteiro(vector<roteiro> &listaRoteiros){
     cout << "Digite a duracao da viagem no formato (HH:mm)" << endl;
     cin >> novoRoteiro.duracao;
     cout << "Digite o local de origem" << endl;
-    cin >> novoRoteiro.origem;
+    getline(cin,novoRoteiro.origem);
     cout << "Digite o local de destino" << endl;
-    cin >> novoRoteiro.destino;
+    getline(cin,novoRoteiro.destino);
     listaRoteiros.push_back(novoRoteiro);
     cout << "Roteiro INCLUIDO com sucesso" << endl;
 }
