@@ -60,7 +60,6 @@ void excluirPassageiro(vector<Passageiro>& passageiros) {
             return;
         }
     }
-    
     cout << "Passageiro não encontrado." << endl;
 }
 
@@ -99,10 +98,8 @@ void alterarPassageiro(vector<Passageiro>& passageiros) {
             return;
         }
     }
-    
     cout << "Passageiro não encontrado." << endl;
 }
-
 
 void listarPassageiros(const vector<Passageiro>& passageiros) {
     cout << "\nLista de Passageiros:" << endl;
@@ -128,8 +125,7 @@ void localizarPassageiro(const vector<Passageiro>& passageiros) {
             cout << "Número de autorização: " << passageiro.numeroAutorizacao << endl;
             return;
         }
-    }
-    
+    }    
     cout << "Passageiro não encontrado." << endl;
 }
 
@@ -176,7 +172,6 @@ void excluirRoteiro(vector<Roteiro>& roteiros) {
             return;
         }
     }
-    
     cout << "Roteiro não encontrado." << endl;
 }
 
@@ -224,7 +219,6 @@ void alterarRoteiro(vector<Roteiro>& roteiros) {
             return;
         }
     }
-    
     cout << "Roteiro não encontrado." << endl;
 }
 
@@ -336,7 +330,6 @@ int main() {
             }
         }
     }
-
     cout << "Programa encerrado." << endl;
     return 0;
 }
