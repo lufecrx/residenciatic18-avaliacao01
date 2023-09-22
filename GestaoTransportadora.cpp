@@ -983,7 +983,8 @@ void listarOcorrenciasPorPassageiro(vector<EMBARCA> &embarques)
     if (pos == -1)
         return;
 
-    cout << "Passageiro: " << embarques[pos].passageiro.nome << endl;
+    cout << "---" << endl;
+    cout << "Passageiro " << embarques[pos].passageiro.nome << endl;
     for (vector<EMBARCA>::size_type i = 0; i < embarques.size(); i++)
     {
         if (passageiros[pos].cpf == embarques[i].passageiro.cpf)
@@ -1015,7 +1016,59 @@ void listarOcorrenciasPorRoteiro(vector<EMBARCA> &embarques)
     }
 }
 
-// Gestão de ocorrências de uma empresa de transporte
+void registrarOcorrenciaPorRoteiro(vector<EMBARCA> &embarques)
+{
+    cout << "REGISTRAR OCORRÊNCIA POR ROTEIRO" << endl;
+
+    vector<ROTEIRO> roteiros = getRoteiros(embarques);
+
+    int posRot = encontrarRoteiro(roteiros);
+
+    if (posRot == -1)
+        return;
+
+    OCORRENCIA ocorrencia;
+
+    cout << "Descrição: ";
+    cin.ignore();
+    getline(cin, ocorrencia.descricao);
+
+    string data, hora;
+    cout << "Data (dd/mm/aaaa): ";
+    cin >> data;
+
+    if (!dataValida(data, 2)) // A ocorrência não pode ser do futuro
+    {
+        cout << "Use o formato dd/mm/aaaa para a data. Informe anos entre 1900 a 2023." << endl;
+        return;
+    }
+
+    cout << "Hora (hh:mm): ";
+    cin >> hora;
+
+    if (!horaValida(hora))
+    {
+        cout << "Use o formato hh:mm para o horário." << endl;
+        return;
+    }
+
+    ocorrencia.dataHora = "[" + data + "] - " + hora + " horas";
+
+    cout << "Número de apólice: ";
+    cin >> ocorrencia.numApolice;
+
+    // Adicione a ocorrência a todos os embarques associados a este roteiro
+    for (vector<EMBARCA>::size_type i = 0; i < embarques.size(); i++)
+    {
+        if (embarques[i].roteiro.codigo == roteiros[posRot].codigo)
+        {
+            embarques[i].ocorrencia = ocorrencia;
+        }
+    }
+
+    cout << "Ocorrência registrada com sucesso para o roteiro " << roteiros[posRot].codigo << endl;
+}
+
 void menuOcorrencias(vector<EMBARCA> &embarques)
 {
     int resposta;
@@ -1030,6 +1083,7 @@ void menuOcorrencias(vector<EMBARCA> &embarques)
         cout << "3 - Alterar dado do ocorrência" << endl;
         cout << "4 - Listar todos os ocorrências por passageiro" << endl;
         cout << "5 - Listar todos os ocorrências por roteiro" << endl;
+        cout << "6 - Registrar ocorrência por roteiro" << endl;
         cout << "0 - Sair" << endl;
         cout << "Opção: ";
         cin >> resposta;
@@ -1052,6 +1106,9 @@ void menuOcorrencias(vector<EMBARCA> &embarques)
             break;
         case 5:
             listarOcorrenciasPorRoteiro(embarques);
+            break;
+        case 6:
+            registrarOcorrenciaPorRoteiro(embarques);
             break;
         case 0:
             cout << "Gestão de ocorrencias encerrado." << endl;
