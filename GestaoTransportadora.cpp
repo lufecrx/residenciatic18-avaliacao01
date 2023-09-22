@@ -806,7 +806,7 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
     } while (resposta != 0);
 }
 
-void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarques)
+void incluirOcorrencia(vector<EMBARCA> &embarques)
 {
     cout << "INCLUIR OCORRÊNCIA" << endl;
 
@@ -826,7 +826,7 @@ void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarqu
     cout << "Descrição: ";
     cin.ignore();
     getline(cin, ocorrencia.descricao);
-    
+
     string data, hora;
     cout << "Data (dd/mm/aaaa): ";
     cin >> data;
@@ -851,14 +851,35 @@ void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarqu
     cout << "Número de apólice: ";
     cin >> ocorrencia.numApolice;
 
-    ocorrencias.push_back(ocorrencia);
     embarques[pos].ocorrencia = ocorrencia;
 
     cout << "Ocorrência registrada com sucesso" << endl;
 }
 
+void excluirOcorrencia(vector<EMBARCA> &embarques)
+{
+    vector<ROTEIRO> roteiros;
+    for (const EMBARCA &embarca : embarques)
+    {
+        roteiros.push_back(embarca.roteiro);
+    }
+
+    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+
+    if (pos == -1)
+        return;
+
+    // Criando objeto OCORRENCIA vazio
+    OCORRENCIA ocorrencia;
+
+    // Atribuindo objeto vazio no elemento
+    embarques[pos].ocorrencia = ocorrencia;
+
+    cout << "Ocorrência excluída com sucesso." << endl;
+}
+
 // Gestão de ocorrências de uma empresa de transporte
-void menuOcorrencias(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarques)
+void menuOcorrencias(vector<EMBARCA> &embarques)
 {
     int resposta;
 
@@ -881,7 +902,7 @@ void menuOcorrencias(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarques
         switch (resposta)
         {
         case 1:
-            incluirOcorrencia(ocorrencias, embarques);
+            incluirOcorrencia(embarques);
             break;
         case 2:
             // excluirOcorrencia(ocorrencias);
@@ -914,7 +935,6 @@ int main()
     vector<ROTEIRO> roteiros;
     vector<PASSAGEIRO> passageiros;
     vector<EMBARCA> embarques;
-    vector<OCORRENCIA> ocorrencias;
 
     int resposta;
 
@@ -945,7 +965,7 @@ int main()
             menuEmbarques(embarques, passageiros, roteiros);
             break;
         case 4:
-            menuOcorrencias(ocorrencias, embarques);
+            menuOcorrencias(embarques);
             break;
         case 0:
             cout << "Programa encerrado." << endl;
