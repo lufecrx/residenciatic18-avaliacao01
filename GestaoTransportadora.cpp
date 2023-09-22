@@ -363,7 +363,7 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
         return;
     }
 
-    roteiro.horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
+    roteiro.horarioPrevisto = "[" + data + "]" + " - " + hora + " horas" + " horas";
 
     cout << "Duração prevista: ";
     cin >> duracao;
@@ -480,7 +480,7 @@ void alterarRoteiro(vector<ROTEIRO> &roteiros)
 
                 if (dataValida(data, 1) && horaValida(hora))
                 {
-                    roteiros[pos].horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
+                    roteiros[pos].horarioPrevisto = "[" + data + "]" + " - " + hora + " horas" + " horas";
                     cout << "Data e horário alterados com sucesso." << endl;
                 }
                 else
@@ -665,7 +665,7 @@ void incluirEmbarque(vector<ROTEIRO> &roteiros, vector<PASSAGEIRO> &passageiros,
             return;
         }
 
-        embarque.dataHora = "[" + data + "]" + " - " + hora + " horas";
+        embarque.dataHora = "[" + data + "]" + " - " + hora + " horas" + " horas";
 
         // Encontrando a posição correta para inserir o embarque com base no código do roteiro
         auto it = lower_bound(embarques.begin(), embarques.end(), embarque, compararPorRoteiro);
@@ -676,7 +676,7 @@ void incluirEmbarque(vector<ROTEIRO> &roteiros, vector<PASSAGEIRO> &passageiros,
     }
 }
 
-int localizarPassageiroPeloRoteiro(vector<EMBARCA> &embarques, vector<ROTEIRO> &roteiros)
+int encontrarPassageiroPeloRoteiro(vector<EMBARCA> &embarques, vector<ROTEIRO> &roteiros)
 {
     int posRot = encontrarRoteiro(roteiros);
 
@@ -714,7 +714,7 @@ void excluirEmbarque(vector<EMBARCA> &embarques, vector<ROTEIRO> &roteiros)
 {
     cout << "EXCLUIR EMBARQUE" << endl;
 
-    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+    int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
     if (pos == -1)
         return;
@@ -725,7 +725,7 @@ void excluirEmbarque(vector<EMBARCA> &embarques, vector<ROTEIRO> &roteiros)
 
 void alterarEmbarque(vector<EMBARCA> embarques, vector<ROTEIRO> roteiros)
 {
-    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+    int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
     if (pos == -1)
         return;
@@ -818,7 +818,7 @@ void incluirOcorrencia(vector<EMBARCA> &embarques)
         roteiros.push_back(embarca.roteiro);
     }
 
-    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+    int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
     if (pos == -1)
         return;
@@ -846,7 +846,7 @@ void incluirOcorrencia(vector<EMBARCA> &embarques)
         return;
     }
 
-    ocorrencia.dataHora = "[" + data + "]" + " - " + hora;
+    ocorrencia.dataHora = "[" + data + "]" + " - " + hora + " horas";
 
     cout << "Número de apólice: ";
     cin >> ocorrencia.numApolice;
@@ -864,7 +864,7 @@ void excluirOcorrencia(vector<EMBARCA> &embarques)
         roteiros.push_back(embarca.roteiro);
     }
 
-    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+    int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
     if (pos == -1)
         return;
@@ -876,6 +876,78 @@ void excluirOcorrencia(vector<EMBARCA> &embarques)
     embarques[pos].ocorrencia = ocorrencia;
 
     cout << "Ocorrência excluída com sucesso." << endl;
+}
+
+void mostrarOcorrencia(vector<EMBARCA> &embarques, int pos)
+{
+    cout << "Ocorrência do embarque: " << endl;
+
+    cout << "Descrição: " << embarques[pos].ocorrencia.descricao << endl;
+    cout << "Data e hora: " << embarques[pos].ocorrencia.dataHora << endl;
+    cout << "Número da apólice: " << embarques[pos].ocorrencia.numApolice << endl;
+    cout << endl;
+}
+
+void alterarOcorrencia(vector<EMBARCA> &embarques)
+{
+    cout << "ALTERAR OCORRÊNCIA" << endl;
+
+    vector<ROTEIRO> roteiros;
+    for (const EMBARCA &embarca : embarques)
+    {
+        roteiros.push_back(embarca.roteiro);
+    }
+
+    int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
+
+    mostrarOcorrencia(embarques, pos);
+
+    int opcao;
+    string data, hora;
+    cout << "Escolha o campo que deseja alterar:" << endl;
+    cout << "1. Descrição" << endl;
+    cout << "2. Data e hora" << endl;
+    cout << "3. Número da apólice" << endl;
+    cout << "4. Cancelar" << endl;
+    cin >> opcao;
+
+    switch (opcao)
+    {
+    case 1:
+        cout << "Nova descrição: ";
+        cin.ignore();
+        getline(cin, embarques[pos].ocorrencia.descricao);
+        cout << "Descrição alterada com sucesso" << endl;
+        break;
+    case 2:
+        cout << "Nova data (dd/mm/aaaa): ";
+        cin >> data;
+        if (!dataValida(data, 2))
+        {
+            cout << "Formato de data inválido. Use (dd/mm/aaaa)." << endl;
+            break;
+        }
+        cout << "Nova hora (hh:mm): ";
+        cin >> hora;
+        if (!horaValida(hora))
+        {
+            cout << "Formato de hora inválido. Use (hh:mm)." << endl;
+            break;
+        }
+        embarques[pos].ocorrencia.dataHora = "[" + data +"]" + " - " + hora + " horas" + " horas";
+        cout << "Data e horário alterados com sucesso" << endl;
+        break;
+    case 3:
+        cout << "Novo número de apólice: ";
+        cin >> embarques[pos].ocorrencia.numApolice;
+        cout << "Número de apólice alterado com sucesso" << endl;
+        break;
+    case 4:
+        cout << "Alteração cancelada" << endl;
+        break;
+    default:
+        cout << "Opção inválida" << endl;
+    }
 }
 
 // Gestão de ocorrências de uma empresa de transporte
