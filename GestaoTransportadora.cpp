@@ -22,6 +22,13 @@ struct ROTEIRO
     string destino;
 };
 
+struct OCORRENCIA
+{
+    string descricao;
+    string dataHora;
+    string numApolice;
+};
+
 struct EMBARCA
 {
     bool realizada;
@@ -31,13 +38,6 @@ struct EMBARCA
     ROTEIRO roteiro;
     OCORRENCIA ocorrencia;
     unsigned int codigoRoteiro;
-};
-
-struct OCORRENCIA
-{
-    string descricao;
-    string dataHora;
-    string numApolice;
 };
 
 // Gestão de passageiros de uma empresa de transporte.
@@ -824,8 +824,9 @@ void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarqu
         return;
 
     cout << "Descrição: ";
-    cin >> ocorrencia.descricao;
-
+    cin.ignore();
+    getline(cin, ocorrencia.descricao);
+    
     string data, hora;
     cout << "Data (dd/mm/aaaa): ";
     cin >> data;
@@ -845,10 +846,13 @@ void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarqu
         return;
     }
 
-    ocorrencia.dataHora = "["+ data +"]" + " - " + hora;
+    ocorrencia.dataHora = "[" + data + "]" + " - " + hora;
 
     cout << "Número de apólice: ";
     cin >> ocorrencia.numApolice;
+
+    ocorrencias.push_back(ocorrencia);
+    embarques[pos].ocorrencia = ocorrencia;
 
     cout << "Ocorrência registrada com sucesso" << endl;
 }
@@ -942,6 +946,7 @@ int main()
             break;
         case 4:
             menuOcorrencias(ocorrencias, embarques);
+            break;
         case 0:
             cout << "Programa encerrado." << endl;
             break;
