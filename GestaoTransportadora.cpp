@@ -806,17 +806,41 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
     } while (resposta != 0);
 }
 
+// Gestão de ocorrências de uma empresa de transporte
+
+// Retorna um vetor do tipo roteiro contidos em uma lista de embarques
+vector<ROTEIRO> getRoteiros(vector<EMBARCA> &embarques)
+{
+    vector<ROTEIRO> roteiros;
+
+    for (const EMBARCA &embarca : embarques)
+    {
+        roteiros.push_back(embarca.roteiro);
+    }
+
+    return roteiros;
+}
+
+// Retorna um vetor do tipo passageiro contidos em uma lista de embarques
+vector<PASSAGEIRO> getPassageiros(vector<EMBARCA> &embarques)
+{
+    vector<PASSAGEIRO> passageiros;
+
+    for (const EMBARCA &embarca : embarques)
+    {
+        passageiros.push_back(embarca.passageiro);
+    }
+
+    return passageiros;
+}
+
 void incluirOcorrencia(vector<EMBARCA> &embarques)
 {
     cout << "INCLUIR OCORRÊNCIA" << endl;
 
     OCORRENCIA ocorrencia;
 
-    vector<ROTEIRO> roteiros;
-    for (const EMBARCA &embarca : embarques)
-    {
-        roteiros.push_back(embarca.roteiro);
-    }
+    vector<ROTEIRO> roteiros = getRoteiros(embarques);
 
     int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
@@ -858,11 +882,7 @@ void incluirOcorrencia(vector<EMBARCA> &embarques)
 
 void excluirOcorrencia(vector<EMBARCA> &embarques)
 {
-    vector<ROTEIRO> roteiros;
-    for (const EMBARCA &embarca : embarques)
-    {
-        roteiros.push_back(embarca.roteiro);
-    }
+    vector<ROTEIRO> roteiros = getRoteiros(embarques);
 
     int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
@@ -892,11 +912,7 @@ void alterarOcorrencia(vector<EMBARCA> &embarques)
 {
     cout << "ALTERAR OCORRÊNCIA" << endl;
 
-    vector<ROTEIRO> roteiros;
-    for (const EMBARCA &embarca : embarques)
-    {
-        roteiros.push_back(embarca.roteiro);
-    }
+    vector<ROTEIRO> roteiros = getRoteiros(embarques);
 
     int pos = encontrarPassageiroPeloRoteiro(embarques, roteiros);
 
@@ -934,7 +950,7 @@ void alterarOcorrencia(vector<EMBARCA> &embarques)
             cout << "Formato de hora inválido. Use (hh:mm)." << endl;
             break;
         }
-        embarques[pos].ocorrencia.dataHora = "[" + data +"]" + " - " + hora + " horas" + " horas";
+        embarques[pos].ocorrencia.dataHora = "[" + data + "]" + " - " + hora + " horas" + " horas";
         cout << "Data e horário alterados com sucesso" << endl;
         break;
     case 3:
@@ -947,6 +963,55 @@ void alterarOcorrencia(vector<EMBARCA> &embarques)
         break;
     default:
         cout << "Opção inválida" << endl;
+    }
+}
+
+void listarOcorrenciasPorPassageiro(vector<EMBARCA> &embarques)
+{
+    cout << "LISTA DE OCORRÊNCIAS POR PASSAGEIRO" << endl;
+
+    vector<PASSAGEIRO> passageiros;
+    vector<OCORRENCIA> ocorrenciasDoPassageiro;
+
+    for (const EMBARCA &embarca : embarques)
+    {
+        passageiros.push_back(embarca.passageiro);
+    }
+
+    int pos = encontrarPassageiro(passageiros);
+
+    if (pos == -1)
+        return;
+
+    cout << "Passageiro: " << embarques[pos].passageiro.nome << endl;
+    for (vector<EMBARCA>::size_type i = 0; i < embarques.size(); i++)
+    {
+        if (passageiros[pos].cpf == embarques[i].passageiro.cpf)
+        {
+            mostrarOcorrencia(embarques, i);
+        }
+    }
+}
+
+void listarOcorrenciasPorRoteiro(vector<EMBARCA> &embarques)
+{
+    cout << "LISTA DE OCORRÊNCIAS POR ROTEIRO" << endl;
+
+    vector<ROTEIRO> roteiros = getRoteiros(embarques);
+    vector<OCORRENCIA> ocorrenciasDoPassageiro;
+
+    int pos = encontrarRoteiro(roteiros);
+
+    if (pos == -1)
+        return;
+
+    cout << "Roteiro: " << embarques[pos].roteiro.codigo << endl;
+    for (vector<EMBARCA>::size_type i = 0; i < embarques.size(); i++)
+    {
+        if (roteiros[pos].codigo == embarques[i].roteiro.codigo)
+        {
+            mostrarOcorrencia(embarques, i);
+        }
     }
 }
 
@@ -977,16 +1042,16 @@ void menuOcorrencias(vector<EMBARCA> &embarques)
             incluirOcorrencia(embarques);
             break;
         case 2:
-            // excluirOcorrencia(ocorrencias);
+            excluirOcorrencia(embarques);
             break;
         case 3:
-            // alterarOcorrencia(ocorrencias);
+            alterarOcorrencia(embarques);
             break;
         case 4:
-            // listarOcorrenciasPorPassageiro(ocorrencias);
+            listarOcorrenciasPorPassageiro(embarques);
             break;
         case 5:
-            // listarOcorrenciasPorRoteiro(ocorrencias);
+            listarOcorrenciasPorRoteiro(embarques);
             break;
         case 0:
             cout << "Gestão de ocorrencias encerrado." << endl;
