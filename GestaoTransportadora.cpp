@@ -29,6 +29,7 @@ struct EMBARCA
     string duracao;
     PASSAGEIRO passageiro;
     ROTEIRO roteiro;
+    OCORRENCIA ocorrencia;
     unsigned int codigoRoteiro;
 };
 
@@ -36,14 +37,14 @@ struct OCORRENCIA
 {
     string descricao;
     string dataHora;
-    unsigned int numApolice;
+    string numApolice;
 };
 
 // Gestão de passageiros de uma empresa de transporte.
 
 bool dataValida(string data, int opcao)
 {
-    // Dias entre 1 e 31, meses entre 1 a 12, anos a partir de 2023
+    // Dias entre 1 e 31, meses entre 1 a 12, anos a partir de 2023 (ano atual)
     regex dataRegex1(R"((0[1-9]|[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2]|[1-9])/(202[3-9]|20[3-9][0-9]))");
 
     // Dias entre 1 e 31, meses entre 1 a 12, anos entre 1900 e 2023
@@ -124,7 +125,7 @@ void incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
     if (!dataValida(data, 2)) // Se data estiver incorreto
     {
-        cout << "Use o formato dd/mm/aaaa para a data. É permitido anos entre 1900 a 2023." << endl;
+        cout << "Use o formato dd/mm/aaaa para a data. Informe anos entre 1900 a 2023." << endl;
         return;
     }
 
@@ -227,7 +228,7 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
                 cin >> data;
                 if (!dataValida(data, 2)) // se data estiver inválida
                 {
-                    cout << "Use o formato dd/mm/aaaa para a data. É permitido anos entre 1900 a 2023." << endl;
+                    cout << "Use o formato dd/mm/aaaa para a data. Informe anos entre 1900 a 2023." << endl;
                     break;
                 }
                 else
@@ -373,8 +374,7 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
     }
     else
     {
-        cout << "Informações inválidas: " << endl
-             << "Use o formato hh:mm para a duração." << endl;
+        cout << "Use o formato hh:mm para a duração." << endl;
         return;
     }
 
@@ -806,14 +806,55 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
     } while (resposta != 0);
 }
 
-void incluirOcorrencia(vector<EMBARCA> &embarques)
+void incluirOcorrencia(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarques)
 {
-    
+    cout << "INCLUIR OCORRÊNCIA" << endl;
 
+    OCORRENCIA ocorrencia;
+
+    vector<ROTEIRO> roteiros;
+    for (const EMBARCA &embarca : embarques)
+    {
+        roteiros.push_back(embarca.roteiro);
+    }
+
+    int pos = localizarPassageiroPeloRoteiro(embarques, roteiros);
+
+    if (pos == -1)
+        return;
+
+    cout << "Descrição: ";
+    cin >> ocorrencia.descricao;
+
+    string data, hora;
+    cout << "Data (dd/mm/aaaa): ";
+    cin >> data;
+
+    if (!dataValida(data, 2)) // A ocorrência não pode ser do futuro
+    {
+        cout << "Use o formato dd/mm/aaaa para a data. Informe anos entre 1900 a 2023." << endl;
+        return;
+    }
+
+    cout << "Hora (hh:mm): ";
+    cin >> hora;
+
+    if (!horaValida(hora))
+    {
+        cout << "Use o formato hh:mm para o horário." << endl;
+        return;
+    }
+
+    ocorrencia.dataHora = "["+ data +"]" + " - " + hora;
+
+    cout << "Número de apólice: ";
+    cin >> ocorrencia.numApolice;
+
+    cout << "Ocorrência registrada com sucesso" << endl;
 }
 
 // Gestão de ocorrências de uma empresa de transporte
-void menuOcorrencias(vector<OCORRENCIA> &ocorrencias)
+void menuOcorrencias(vector<OCORRENCIA> &ocorrencias, vector<EMBARCA> &embarques)
 {
     int resposta;
 
@@ -836,7 +877,7 @@ void menuOcorrencias(vector<OCORRENCIA> &ocorrencias)
         switch (resposta)
         {
         case 1:
-            incluirOcorrencia(ocorrencias);
+            incluirOcorrencia(ocorrencias, embarques);
             break;
         case 2:
             // excluirOcorrencia(ocorrencias);
@@ -900,7 +941,7 @@ int main()
             menuEmbarques(embarques, passageiros, roteiros);
             break;
         case 4:
-            menuOcorrencias(ocorrencias);
+            menuOcorrencias(ocorrencias, embarques);
         case 0:
             cout << "Programa encerrado." << endl;
             break;
