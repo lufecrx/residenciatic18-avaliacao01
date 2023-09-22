@@ -32,7 +32,14 @@ struct EMBARCA
     unsigned int codigoRoteiro;
 };
 
-// Gest„o de passageiros de uma empresa de transporte.
+struct OCORRENCIA
+{
+    string descricao;
+    string dataHora;
+    unsigned int numApolice;
+};
+
+// Gest√£o de passageiros de uma empresa de transporte.
 
 bool dataValida(string data, int opcao)
 {
@@ -58,7 +65,7 @@ bool dataValida(string data, int opcao)
 
 bool horaValida(string hora)
 {
-    // Hor·rios v·lidos
+    // Hor√°rios v√°lidos
     regex horarioRegex(R"((2[0-3]|[0-1]?[0-9]):([0-5]?[0-9]))");
 
     return regex_match(hora, horarioRegex);
@@ -83,18 +90,18 @@ int encontrarPassageiro(vector<PASSAGEIRO> passageiros)
         {
             // Encontrou o passageiro com o CPF especificado
             cout << "Passageiro com CPF " << referencia << " encontrado." << endl;
-            return i; // Retorna o Ìndice dele na lista
+            return i; // Retorna o √≠ndice dele na lista
         }
         else if (passageiros[i].cpf > referencia)
         {
-            // Chegou a um passageiro com CPF maior, o passageiro n„o est· na lista
-            cout << "Passageiro com CPF " << referencia << " n„o encontrado." << endl;
-            return -1; // Passageiro n„o encontrado
+            // Chegou a um passageiro com CPF maior, o passageiro n√£o est√° na lista
+            cout << "Passageiro com CPF " << referencia << " n√£o encontrado." << endl;
+            return -1; // Passageiro n√£o encontrado
         }
     }
 
-    // Se o loop terminar sem encontrar o passageiro, significa que ele n„o est· na lista
-    cout << "Passageiro com CPF " << referencia << " n„o encontrado." << endl;
+    // Se o loop terminar sem encontrar o passageiro, significa que ele n√£o est√° na lista
+    cout << "Passageiro com CPF " << referencia << " n√£o encontrado." << endl;
     return -1;
 }
 
@@ -117,19 +124,19 @@ void incluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
     if (!dataValida(data, 2)) // Se data estiver incorreto
     {
-        cout << "Use o formato dd/mm/aaaa para a data. … permitido anos entre 1900 a 2023." << endl;
+        cout << "Use o formato dd/mm/aaaa para a data. √â permitido anos entre 1900 a 2023." << endl;
         return;
     }
 
     passageiro.nascimento = data;
 
-    cout << "N˙mero de autorizaÁ„o: ";
+    cout << "N√∫mero de autoriza√ß√£o: ";
     cin >> passageiro.numAutorizacao;
 
-    // Encontrando a posiÁ„o correta para inserir o passageiro com base no CPF
+    // Encontrando a posi√ß√£o correta para inserir o passageiro com base no CPF
     auto it = lower_bound(passageiros.begin(), passageiros.end(), passageiro, compararPorCPF);
 
-    // Inserindo o passageiro na posiÁ„o encontrada
+    // Inserindo o passageiro na posi√ß√£o encontrada
     passageiros.insert(it, passageiro);
 
     cout << "Passageiro inserido com sucesso." << endl;
@@ -141,18 +148,18 @@ bool excluirPassageiro(vector<PASSAGEIRO> &passageiros)
 
     int pos = encontrarPassageiro(passageiros);
 
-    if (pos == -1) // CPF informado n„o est· na lista
+    if (pos == -1) // CPF informado n√£o est√° na lista
     {
         return false;
     }
     else
     {
         passageiros.erase(passageiros.begin() + pos);
-        cout << "Passageiro excluÌdo." << endl;
+        cout << "Passageiro exclu√≠do." << endl;
         return true;
     }
 
-    return false; // O passageiro informado n„o existe
+    return false; // O passageiro informado n√£o existe
 }
 
 bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
@@ -161,7 +168,7 @@ bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
 
     int pos = encontrarPassageiro(passageiros);
 
-    if (pos == -1) // CPF informado n„o est· na lista
+    if (pos == -1) // CPF informado n√£o est√° na lista
     {
         return false;
     }
@@ -170,9 +177,9 @@ bool localizarPassageiro(vector<PASSAGEIRO> passageiros)
         cout << "Nome: " << passageiros[pos].nome << endl;
         cout << "CPF: " << passageiros[pos].cpf << endl;
         cout << "Data de nascimento: " << passageiros[pos].nascimento << endl;
-        cout << "N˙mero de autorizaÁ„o: " << passageiros[pos].numAutorizacao << endl;
+        cout << "N√∫mero de autoriza√ß√£o: " << passageiros[pos].numAutorizacao << endl;
 
-        return true; // Passageiro encontrado e informaÁıes impressas na tela
+        return true; // Passageiro encontrado e informa√ß√µes impressas na tela
     }
 }
 
@@ -183,7 +190,7 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
     int pos = encontrarPassageiro(passageiros);
     char resposta;
 
-    if (pos == -1) // CPF informado n„o est· na lista
+    if (pos == -1) // CPF informado n√£o est√° na lista
     {
         return;
     }
@@ -192,7 +199,7 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
         int campo;
         string data;
 
-        cout << "Insira o n˙mero correspondente ao campo a ser alterado, qualquer outro para voltar: " << endl;
+        cout << "Insira o n√∫mero correspondente ao campo a ser alterado, qualquer outro para voltar: " << endl;
 
         do
         {
@@ -201,8 +208,8 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
             cout << "1 - Nome" << endl;
             cout << "2 - CPF" << endl;
             cout << "3 - Data de nascimento" << endl;
-            cout << "4 - N˙mero de autorizaÁ„o" << endl;
-            cout << "OpÁ„o: ";
+            cout << "4 - N√∫mero de autoriza√ß√£o" << endl;
+            cout << "Op√ß√£o: ";
             cin >> campo;
 
             switch (campo)
@@ -218,9 +225,9 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
             case 3:
                 cout << "Data (dd/mm/aaaa): ";
                 cin >> data;
-                if (!dataValida(data, 2)) // se data estiver inv·lida
+                if (!dataValida(data, 2)) // se data estiver inv√°lida
                 {
-                    cout << "Use o formato dd/mm/aaaa para a data. … permitido anos entre 1900 a 2023." << endl;
+                    cout << "Use o formato dd/mm/aaaa para a data. √â permitido anos entre 1900 a 2023." << endl;
                     break;
                 }
                 else
@@ -229,11 +236,11 @@ void alterarDado(vector<PASSAGEIRO> &passageiros)
                     break;
                 }
             case 4:
-                cout << "Novo n˙mero de autorizaÁ„o: ";
+                cout << "Novo n√∫mero de autoriza√ß√£o: ";
                 cin >> passageiros[pos].numAutorizacao;
                 break;
             default:
-                cout << "Campo n„o reconhecido. Nenhuma alteraÁ„o foi feita." << endl;
+                cout << "Campo n√£o reconhecido. Nenhuma altera√ß√£o foi feita." << endl;
                 break;
             }
 
@@ -255,7 +262,7 @@ void listarPassageiros(vector<PASSAGEIRO> passageiros)
         cout << "Nome: " << passageiros[pos].nome << endl;
         cout << "CPF: " << passageiros[pos].cpf << endl;
         cout << "Data de nascimento: " << passageiros[pos].nascimento << endl;
-        cout << "N˙mero de autorizaÁ„o: " << passageiros[pos].numAutorizacao << endl;
+        cout << "N√∫mero de autoriza√ß√£o: " << passageiros[pos].numAutorizacao << endl;
 
         qntPassageiros++;
     }
@@ -275,18 +282,18 @@ void menuPassageiros(vector<PASSAGEIRO> &passageiros)
 {
     int resposta;
 
-    cout << "   -  MÛdulo de Gest„o de Passageiros  -   " << endl;
+    cout << "   -  M√≥dulo de Gest√£o de Passageiros  -   " << endl;
 
     do
     {
-        cout << "Selecione a opÁ„o desejada:" << endl;
+        cout << "Selecione a op√ß√£o desejada:" << endl;
         cout << "1 - Incluir passageiro" << endl;
         cout << "2 - Excluir passageiro" << endl;
         cout << "3 - Alterar dado do passageiro" << endl;
         cout << "4 - Listar todos os passageiros" << endl;
         cout << "5 - Localizar passageiro" << endl;
         cout << "0 - Sair" << endl;
-        cout << "OpÁ„o: ";
+        cout << "Op√ß√£o: ";
         cin >> resposta;
 
         cout << endl;
@@ -309,10 +316,10 @@ void menuPassageiros(vector<PASSAGEIRO> &passageiros)
             localizarPassageiro(passageiros);
             break;
         case 0:
-            cout << "Gest„o de passageiros encerrado." << endl;
+            cout << "Gest√£o de passageiros encerrado." << endl;
             break;
         default:
-            cout << "Insira o n˙mero correspondente a alguma das opÁıes." << endl;
+            cout << "Insira o n√∫mero correspondente a alguma das op√ß√µes." << endl;
             break;
         }
 
@@ -321,9 +328,9 @@ void menuPassageiros(vector<PASSAGEIRO> &passageiros)
     } while (resposta != 0);
 }
 
-// Gest„o de roteiros de uma empresa de transporte.
+// Gest√£o de roteiros de uma empresa de transporte.
 
-// Compara dois roteiros pelo cÛdigo
+// Compara dois roteiros pelo c√≥digo
 bool compararPorCodigo(const ROTEIRO &a, const ROTEIRO &b)
 {
     return a.codigo < b.codigo;
@@ -334,7 +341,7 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
     ROTEIRO roteiro;
     string data, hora, duracao;
 
-    cout << "CÛdigo do roteiro: ";
+    cout << "C√≥digo do roteiro: ";
     cin >> roteiro.codigo;
 
     cout << "Data (dd/mm/aaaa): ";
@@ -342,22 +349,22 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
 
     if (!dataValida(data, 1)) // Se data estiver incorreto
     {
-        cout << "Use o formato dd/mm/aaaa para a data. N„o informe anos anteriores a 2023." << endl;
+        cout << "Use o formato dd/mm/aaaa para a data. N√£o informe anos anteriores a 2023." << endl;
         return;
     }
 
-    cout << "Hor·rio previsto (hh:mm): ";
+    cout << "Hor√°rio previsto (hh:mm): ";
     cin >> hora;
 
     if (!horaValida(hora)) // Se hora estiver incorreto
     {
-        cout << "Use o formato hh:mm para o hor·rio." << endl;
+        cout << "Use o formato hh:mm para o hor√°rio." << endl;
         return;
     }
 
     roteiro.horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
 
-    cout << "DuraÁ„o prevista: ";
+    cout << "Dura√ß√£o prevista: ";
     cin >> duracao;
 
     if (horaValida(duracao))
@@ -366,8 +373,8 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
     }
     else
     {
-        cout << "InformaÁıes inv·lidas: " << endl
-             << "Use o formato hh:mm para a duraÁ„o." << endl;
+        cout << "Informa√ß√µes inv√°lidas: " << endl
+             << "Use o formato hh:mm para a dura√ß√£o." << endl;
         return;
     }
 
@@ -375,7 +382,7 @@ void incluirRoteiro(vector<ROTEIRO> &roteiros)
     cin.ignore();
     getline(cin, roteiro.destino);
 
-    // Encontrando a posiÁ„o correta para inserir o roteiro com base no cÛdigo
+    // Encontrando a posi√ß√£o correta para inserir o roteiro com base no c√≥digo
     auto it = lower_bound(roteiros.begin(), roteiros.end(), roteiro, compararPorCodigo);
 
     roteiros.insert(it, roteiro);
@@ -387,7 +394,7 @@ int encontrarRoteiro(vector<ROTEIRO> roteiros)
 {
     unsigned int referencia;
 
-    cout << "CÛdigo do roteiro procurado: ";
+    cout << "C√≥digo do roteiro procurado: ";
     cin >> referencia;
 
     for (vector<ROTEIRO>::size_type i = 0; i < roteiros.size(); i++)
@@ -395,19 +402,19 @@ int encontrarRoteiro(vector<ROTEIRO> roteiros)
         if (roteiros[i].codigo == referencia)
         {
             // Encontrou o roteiro
-            cout << "Roteiro com cÛdigo " << referencia << " encontrado." << endl;
+            cout << "Roteiro com c√≥digo " << referencia << " encontrado." << endl;
             return i;
         }
         else if (roteiros[i].codigo > referencia)
         {
-            // Chegou a um roteiro com cÛdigo maior que o pesquisado
-            cout << "Roteiro com cÛdigo " << referencia << " n„o encontrado." << endl;
+            // Chegou a um roteiro com c√≥digo maior que o pesquisado
+            cout << "Roteiro com c√≥digo " << referencia << " n√£o encontrado." << endl;
             return -1;
         }
     }
 
     // Loop terminou sem encontrar o roteiro
-    cout << "Roteiro com cÛdigo " << referencia << " n„o encontrado" << endl;
+    cout << "Roteiro com c√≥digo " << referencia << " n√£o encontrado" << endl;
     return -1;
 }
 
@@ -417,7 +424,7 @@ void excluirRoteiro(vector<ROTEIRO> &roteiros)
 
     int pos = encontrarRoteiro(roteiros);
 
-    if (pos == -1) // Roteiro n„o est· na lista
+    if (pos == -1) // Roteiro n√£o est√° na lista
     {
         return;
     }
@@ -436,7 +443,7 @@ void alterarRoteiro(vector<ROTEIRO> &roteiros)
     int pos = encontrarRoteiro(roteiros);
     char resposta;
 
-    if (pos == -1) // Roteiro n„o est· na lista
+    if (pos == -1) // Roteiro n√£o est√° na lista
     {
         return;
     }
@@ -445,58 +452,58 @@ void alterarRoteiro(vector<ROTEIRO> &roteiros)
         int campo;
         string data, hora, duracao;
 
-        cout << "Insira o n˙mero correspondente ao campo a ser alterado, qualquer outro para voltar: " << endl;
+        cout << "Insira o n√∫mero correspondente ao campo a ser alterado, qualquer outro para voltar: " << endl;
 
         do
         {
             cout << "---" << endl;
 
-            cout << "1 - CÛdigo" << endl;
+            cout << "1 - C√≥digo" << endl;
             cout << "2 - Data e hora prevista" << endl;
-            cout << "3 - DuraÁ„o prevista" << endl;
+            cout << "3 - Dura√ß√£o prevista" << endl;
             cout << "4 - Destino" << endl;
-            cout << "OpÁ„o: ";
+            cout << "Op√ß√£o: ";
             cin >> campo;
 
             switch (campo)
             {
             case 1:
-                cout << "Novo cÛdigo: ";
+                cout << "Novo c√≥digo: ";
                 cin >> roteiros[pos].codigo;
-                cout << "CÛdigo alterado com sucesso." << endl;
+                cout << "C√≥digo alterado com sucesso." << endl;
                 break;
             case 2:
                 cout << "Nova data: ";
                 cin >> data;
-                cout << "Novo hor·rio: ";
+                cout << "Novo hor√°rio: ";
                 cin >> hora;
 
                 if (dataValida(data, 1) && horaValida(hora))
                 {
                     roteiros[pos].horarioPrevisto = "[" + data + "]" + " - " + hora + " horas";
-                    cout << "Data e hor·rio alterados com sucesso." << endl;
+                    cout << "Data e hor√°rio alterados com sucesso." << endl;
                 }
                 else
                 {
-                    cout << "InformaÁıes inv·lidas: " << endl
-                         << "Use o formato dd/mm/aaaa para a data. N„o informe anos anteriores a 2023." << endl
-                         << "Use o formato hh:mm para o hor·rio." << endl;
+                    cout << "Informa√ß√µes inv√°lidas: " << endl
+                         << "Use o formato dd/mm/aaaa para a data. N√£o informe anos anteriores a 2023." << endl
+                         << "Use o formato hh:mm para o hor√°rio." << endl;
                     break;
                 }
                 break;
             case 3:
-                cout << "Nova duraÁ„o prevista: ";
+                cout << "Nova dura√ß√£o prevista: ";
                 cin >> duracao;
 
                 if (horaValida(duracao))
                 {
                     roteiros[pos].duracaoPrevista = duracao + " horas";
-                    cout << "DuraÁ„o alterada com sucesso." << endl;
+                    cout << "Dura√ß√£o alterada com sucesso." << endl;
                 }
                 else
                 {
-                    cout << "InformaÁıes inv·lidas: " << endl
-                         << "Use o formato hh:mm para a duraÁ„o.";
+                    cout << "Informa√ß√µes inv√°lidas: " << endl
+                         << "Use o formato hh:mm para a dura√ß√£o.";
                     break;
                 }
                 break;
@@ -507,7 +514,7 @@ void alterarRoteiro(vector<ROTEIRO> &roteiros)
                 cout << "Destino alterado com sucesso." << endl;
                 break;
             default:
-                cout << "Campo n„o reconhecido. Nenhuma alteraÁ„o foi feita." << endl;
+                cout << "Campo n√£o reconhecido. Nenhuma altera√ß√£o foi feita." << endl;
                 break;
             }
 
@@ -525,9 +532,9 @@ void listarRoteiros(vector<ROTEIRO> roteiros)
     for (vector<ROTEIRO>::size_type pos = 0; pos < roteiros.size(); pos++)
     {
         cout << "---" << endl;
-        cout << "CÛdigo: " << roteiros[pos].codigo << endl;
+        cout << "C√≥digo: " << roteiros[pos].codigo << endl;
         cout << "Agendado para: " << roteiros[pos].horarioPrevisto << endl;
-        cout << "DuraÁ„o prevista: " << roteiros[pos].duracaoPrevista << endl;
+        cout << "Dura√ß√£o prevista: " << roteiros[pos].duracaoPrevista << endl;
         cout << "Destino: " << roteiros[pos].destino << endl;
     }
 }
@@ -544,9 +551,9 @@ void localizarRoteiro(vector<ROTEIRO> roteiros)
     }
     else
     {
-        cout << "CÛdigo: " << roteiros[pos].codigo << endl;
+        cout << "C√≥digo: " << roteiros[pos].codigo << endl;
         cout << "Agendado para: " << roteiros[pos].horarioPrevisto << endl;
-        cout << "DuraÁ„o prevista: " << roteiros[pos].duracaoPrevista << endl;
+        cout << "Dura√ß√£o prevista: " << roteiros[pos].duracaoPrevista << endl;
         cout << "Destino: " << roteiros[pos].destino << endl;
     }
 }
@@ -555,18 +562,18 @@ void menuRoteiros(vector<ROTEIRO> &roteiros)
 {
     int resposta;
 
-    cout << "   -   MÛdulo de Gest„o de Roteiros    -   " << endl;
+    cout << "   -   M√≥dulo de Gest√£o de Roteiros    -   " << endl;
 
     do
     {
-        cout << "Selecione a opÁ„o desejada:" << endl;
+        cout << "Selecione a op√ß√£o desejada:" << endl;
         cout << "1 - Incluir roteiro" << endl;
         cout << "2 - Excluir roteiro" << endl;
         cout << "3 - Alterar dado do roteiro" << endl;
         cout << "4 - Listar todos os roteiros" << endl;
         cout << "5 - Localizar roteiro" << endl;
         cout << "0 - Sair" << endl;
-        cout << "OpÁ„o: ";
+        cout << "Op√ß√£o: ";
         cin >> resposta;
 
         cout << endl;
@@ -589,10 +596,10 @@ void menuRoteiros(vector<ROTEIRO> &roteiros)
             localizarRoteiro(roteiros);
             break;
         case 0:
-            cout << "Gest„o de Roteiros encerrado." << endl;
+            cout << "Gest√£o de Roteiros encerrado." << endl;
             break;
         default:
-            cout << "Insira o n˙mero correspondente a alguma das opÁıes." << endl;
+            cout << "Insira o n√∫mero correspondente a alguma das op√ß√µes." << endl;
             break;
         }
 
@@ -601,7 +608,7 @@ void menuRoteiros(vector<ROTEIRO> &roteiros)
     } while (resposta != 0);
 }
 
-// Gest„o de embarques de uma empresa de transporte
+// Gest√£o de embarques de uma empresa de transporte
 
 bool compararPorRoteiro(const EMBARCA &a, const EMBARCA &b)
 {
@@ -622,7 +629,7 @@ void incluirEmbarque(vector<ROTEIRO> &roteiros, vector<PASSAGEIRO> &passageiros,
 
     if (posPass == -1 || posRot == -1)
     {
-        cout << "CPF do passageiro ou cÛdigo do roteiro inexistente." << endl;
+        cout << "CPF do passageiro ou c√≥digo do roteiro inexistente." << endl;
         return;
     }
     else
@@ -645,22 +652,22 @@ void incluirEmbarque(vector<ROTEIRO> &roteiros, vector<PASSAGEIRO> &passageiros,
 
         if (!dataValida(data, 1)) // Se data estiver incorreto
         {
-            cout << "Use o formato dd/mm/aaaa para a data. N„o informe anos anteriores a 2023." << endl;
+            cout << "Use o formato dd/mm/aaaa para a data. N√£o informe anos anteriores a 2023." << endl;
             return;
         }
 
-        cout << "Hor·rio real do embarque (hh:mm): ";
+        cout << "Hor√°rio real do embarque (hh:mm): ";
         cin >> hora;
 
         if (!horaValida(hora)) // Se hora estiver incorreto
         {
-            cout << "Use o formato hh:mm para o hor·rio." << endl;
+            cout << "Use o formato hh:mm para o hor√°rio." << endl;
             return;
         }
 
         embarque.dataHora = "[" + data + "]" + " - " + hora + " horas";
 
-        // Encontrando a posiÁ„o correta para inserir o embarque com base no cÛdigo do roteiro
+        // Encontrando a posi√ß√£o correta para inserir o embarque com base no c√≥digo do roteiro
         auto it = lower_bound(embarques.begin(), embarques.end(), embarque, compararPorRoteiro);
 
         embarques.insert(it, embarque);
@@ -676,7 +683,7 @@ int localizarPassageiroPeloRoteiro(vector<EMBARCA> &embarques, vector<ROTEIRO> &
     vector<int> registros;
     vector<PASSAGEIRO> passageirosEmbarcados;
 
-    if (posRot == -1) // Roteiro n„o est· na lista
+    if (posRot == -1) // Roteiro n√£o est√° na lista
     {
         return -1;
     }
@@ -723,7 +730,7 @@ void alterarEmbarque(vector<EMBARCA> embarques, vector<ROTEIRO> roteiros)
     if (pos == -1)
         return;
 
-    cout << "DuraÁ„o real do embarque: ";
+    cout << "Dura√ß√£o real do embarque: ";
     cin >> embarques[pos].duracao;
 
     cout << "Registro alterado com sucesso." << endl;
@@ -743,13 +750,13 @@ void listarEmbarques(vector<EMBARCA> embarques)
         cout << "---" << endl;
         cout << "Nome do passageiro: " << embarques[pos].passageiro.nome << endl;
         cout << "CPF do passageiro: " << embarques[pos].passageiro.cpf << endl;
-        cout << "CÛdigo do roteiro: " << embarques[pos].codigoRoteiro << endl;
+        cout << "C√≥digo do roteiro: " << embarques[pos].codigoRoteiro << endl;
         cout << "Destino: " << embarques[pos].roteiro.destino << endl;
         cout << "Data: " << embarques[pos].dataHora << endl;
         if (embarques[pos].realizada == true)
             cout << "Realizado: [sim]" << endl;
         else
-            cout << "Realizado: [n„o]" << endl;
+            cout << "Realizado: [n√£o]" << endl;
     }
 }
 
@@ -757,17 +764,17 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
 {
     int resposta;
 
-    cout << "   -   Gest„o de Embarques    -   " << endl;
+    cout << "   -   Gest√£o de Embarques    -   " << endl;
 
     do
     {
-        cout << "Selecione a opÁ„o desejada:" << endl;
+        cout << "Selecione a op√ß√£o desejada:" << endl;
         cout << "1 - Incluir embarque" << endl;
         cout << "2 - Excluir embarque" << endl;
         cout << "3 - Alterar dado do embarque" << endl;
         cout << "4 - Listar todos os embarques" << endl;
         cout << "0 - Sair" << endl;
-        cout << "OpÁ„o: ";
+        cout << "Op√ß√£o: ";
         cin >> resposta;
 
         cout << endl;
@@ -787,10 +794,10 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
             listarEmbarques(embarques);
             break;
         case 0:
-            cout << "Gest„o de embarques encerrado." << endl;
+            cout << "Gest√£o de embarques encerrado." << endl;
             break;
         default:
-            cout << "Insira o n˙mero correspondente a alguma das opÁıes." << endl;
+            cout << "Insira o n√∫mero correspondente a alguma das op√ß√µes." << endl;
             break;
         }
 
@@ -799,23 +806,29 @@ void menuEmbarques(vector<EMBARCA> &embarques, vector<PASSAGEIRO> &passageiros, 
     } while (resposta != 0);
 }
 
-// Gest„o de ocorrÍncias de uma empresa de transporte
-void menuOcorrencias(vector<EMBARCA> &embarques)
+void incluirOcorrencia(vector<EMBARCA> &embarques)
+{
+    
+
+}
+
+// Gest√£o de ocorr√™ncias de uma empresa de transporte
+void menuOcorrencias(vector<OCORRENCIA> &ocorrencias)
 {
     int resposta;
 
-    cout << "   -   Gest„o de OcorrÍncias    -   " << endl;
+    cout << "   -   Gest√£o de Ocorr√™ncias    -   " << endl;
 
     do
     {
-        cout << "Selecione a opÁ„o desejada:" << endl;
-        cout << "1 - Incluir ocorrÍncia" << endl;
-        cout << "2 - Excluir ocorrÍncia" << endl;
-        cout << "3 - Alterar dado do ocorrÍncia" << endl;
-        cout << "4 - Listar todos os ocorrÍncias por passageiro" << endl;
-        cout << "5 - Listar todos os ocorrÍncias por roteiro" << endl;
+        cout << "Selecione a op√ß√£o desejada:" << endl;
+        cout << "1 - Incluir ocorr√™ncia" << endl;
+        cout << "2 - Excluir ocorr√™ncia" << endl;
+        cout << "3 - Alterar dado do ocorr√™ncia" << endl;
+        cout << "4 - Listar todos os ocorr√™ncias por passageiro" << endl;
+        cout << "5 - Listar todos os ocorr√™ncias por roteiro" << endl;
         cout << "0 - Sair" << endl;
-        cout << "OpÁ„o: ";
+        cout << "Op√ß√£o: ";
         cin >> resposta;
 
         cout << endl;
@@ -823,25 +836,25 @@ void menuOcorrencias(vector<EMBARCA> &embarques)
         switch (resposta)
         {
         case 1:
-            // incluirOcorrencia(embarques);
+            incluirOcorrencia(ocorrencias);
             break;
         case 2:
-            // excluirOcorrencia(embarques);
+            // excluirOcorrencia(ocorrencias);
             break;
         case 3:
-            // alterarOcorrencia(embarques);
+            // alterarOcorrencia(ocorrencias);
             break;
         case 4:
-            // listarOcorrenciasPorPassageiro(embarques);
+            // listarOcorrenciasPorPassageiro(ocorrencias);
             break;
         case 5:
-            // listarOcorrenciasPorRoteiro(embarques);
+            // listarOcorrenciasPorRoteiro(ocorrencias);
             break;
         case 0:
-            cout << "Gest„o de embarques encerrado." << endl;
+            cout << "Gest√£o de ocorrencias encerrado." << endl;
             break;
         default:
-            cout << "Insira o n˙mero correspondente a alguma das opÁıes." << endl;
+            cout << "Insira o n√∫mero correspondente a alguma das op√ß√µes." << endl;
             break;
         }
 
@@ -856,6 +869,7 @@ int main()
     vector<ROTEIRO> roteiros;
     vector<PASSAGEIRO> passageiros;
     vector<EMBARCA> embarques;
+    vector<OCORRENCIA> ocorrencias;
 
     int resposta;
 
@@ -863,13 +877,13 @@ int main()
 
     do
     {
-        cout << "Selecione a opÁ„o desejada:" << endl;
-        cout << "1 - Gest„o de Passageiros" << endl;
-        cout << "2 - Gest„o de Roteiros" << endl;
-        cout << "3 - Gest„o de Embarques" << endl;
-        cout << "4 - Gest„o de OcorrÍncias" << endl;
+        cout << "Selecione a op√ß√£o desejada:" << endl;
+        cout << "1 - Gest√£o de Passageiros" << endl;
+        cout << "2 - Gest√£o de Roteiros" << endl;
+        cout << "3 - Gest√£o de Embarques" << endl;
+        cout << "4 - Gest√£o de Ocorr√™ncias" << endl;
         cout << "0 - Sair do Programa" << endl;
-        cout << "OpÁ„o: ";
+        cout << "Op√ß√£o: ";
         cin >> resposta;
 
         cout << endl;
@@ -886,12 +900,12 @@ int main()
             menuEmbarques(embarques, passageiros, roteiros);
             break;
         case 4:
-            // menuOcorrencias(embarques);
+            menuOcorrencias(ocorrencias);
         case 0:
             cout << "Programa encerrado." << endl;
             break;
         default:
-            cout << "Insira o n˙mero correspondente a alguma das opÁıes." << endl;
+            cout << "Insira o n√∫mero correspondente a alguma das op√ß√µes." << endl;
             break;
         }
 
